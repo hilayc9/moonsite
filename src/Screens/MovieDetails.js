@@ -30,15 +30,23 @@ export default class MovieDetails extends Component {
         fetch(`http://api.tvmaze.com/shows/${id}`)
             .then(res => res.json())
             .then((resJson) => {
+                let schedule = resJson.status === "Ended" ? "Ended" : `${resJson.schedule.days} at ${resJson.schedule.time}`;
+                let genres = '';
+                let i;
+                    for (i=0;i<resJson.genres.length;i++) {
+                        if (i === 0)
+                            genres = resJson.genres[i];
+                        else
+                            genres = genres + ', ' + resJson.genres[i];
+                    }
                 this.setState({
                     id: resJson.id,
                     title: resJson.name,
                     image: resJson.image.original,
                     rating: resJson.rating.average,
                     summary: resJson.summary,
-                    genres: resJson.genres,
-                    days: resJson.schedule.days,
-                    time: resJson.schedule.time,
+                    genres: genres,
+                    schedule: schedule,
                     network: resJson.network.name,
                     language: resJson.language,
                     isLoading: false
@@ -85,7 +93,7 @@ export default class MovieDetails extends Component {
                                 </View>
                                 <View style={{flex: 3}}>
                                     <Text style={styles.content}>{this.state.network}</Text>
-                                    <Text style={styles.content}>{this.state.days} at {this.state.time}</Text>
+                                    <Text style={styles.content}>{this.state.schedule}</Text>
                                     <Text style={styles.content}>{this.state.genres}</Text>
                                 </View>
                             </View>

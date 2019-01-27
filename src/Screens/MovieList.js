@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
-import {View, FlatList, Text, Image, TouchableHighlight, Dimensions} from 'react-native';
+import {View, FlatList, Text, Image, TouchableHighlight, ActivityIndicator} from 'react-native';
 import {Card, CardItem, Body} from 'native-base';
 import {SearchBar} from "react-native-elements";
 import renderRating from '../Utils/renderRating';
-import loading from '../Images/loading.jpg';
 
 export default class MovieList extends Component {
 
@@ -34,7 +33,7 @@ export default class MovieList extends Component {
                     onChangeText={text => this.searchFilter(text)}
                     autoCorrect={false}
                     containerStyle={{flex: 1}}
-                    />
+                />
 
         });
         this.getMovies();
@@ -87,7 +86,11 @@ export default class MovieList extends Component {
 
     render() {
         if (this.state.isLoading)
-            return <Image source={loading} style={styles.loading}/>;
+            return (
+                <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#252525'}}>
+                        <ActivityIndicator/>
+                </View>
+            );
         else
             return (
                 <View style={styles.container}>
@@ -122,11 +125,6 @@ export default class MovieList extends Component {
 }
 
 const styles = {
-    loading: {
-        flex: 1,
-        width: null,
-        height: null
-    },
     container: {
         flex: 1,
         flexDirection: 'row',
